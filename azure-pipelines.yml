@@ -150,3 +150,4 @@ stages:
                 $(Build.SourcesDirectory)/environment/deployment.yaml
                 $(Build.SourcesDirectory)/environment/service.yaml
                 $(Build.SourcesDirectory)/environment/ingress.yaml
+

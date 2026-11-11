@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DevOps Assessment Script - Generates 10 files with timestamp and prints their content.
 .DESCRIPTION
@@ -43,3 +43,4 @@ Get-ChildItem -Path $OutputDir -Filter "archivo_*_${CurrentTimestamp}.txt" | For
 }
 
 Write-Host "`n[COMPLETADO] Proceso finalizado con éxito." -ForegroundColor Green
+
