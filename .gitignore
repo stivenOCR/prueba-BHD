@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+.scannerwork/
+*.log
+.DS_Store
+output-files/
+
