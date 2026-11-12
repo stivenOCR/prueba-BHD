@@ -93,28 +93,45 @@ stages:
             displayName: 'Ejecutar script Bash para 10 archivos con fecha'
 
   # ============================================================================
-  # STAGE 3: Construcción y Empaquetado Docker (Requisito 4)
+  # STAGE 3: Construcción y Push a Docker Hub (Requisito 4)
   # ============================================================================
-  - stage: Build_Docker
-    displayName: '3. Docker Build'
+  - stage: Build_And_Push_Docker
+    displayName: '3. Docker Build & Push'
     dependsOn: Automation_Tasks
     jobs:
-      - job: DockerBuild
-        displayName: 'Build Docker Image'
+      - job: DockerBuildAndPush
+        displayName: 'Build and Push Docker Image'
         steps:
           - script: |
-              echo "=== CONSTRUYENDO IMAGEN DOCKER ==="
+              echo "=== 1. CONSTRUYENDO IMAGEN DOCKER ==="
               docker build -t $(imageRepository):$(tag) -t $(imageRepository):latest .
               echo "=== IMAGEN GENERADA EXITOSAMENTE ==="
               docker images | grep devops-sample-app
             displayName: 'Docker Build Multi-Stage'
+
+          - script: |
+              echo "=== 2. AUTENTICANDO CON DOCKER HUB ==="
+              if [ -n "$(DOCKER_PASSWORD)" ]; then
+                echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
+                echo "=== 3. PUBLICANDO IMAGEN EN DOCKER HUB ==="
+                docker push $(imageRepository):$(tag)
+                docker push $(imageRepository):latest
+                echo "=== IMAGEN PUBLICADA EXITOSAMENTE DESDE PIPELINE ==="
+              else
+                echo "[INFO] Credenciales de Docker Hub no suministradas como secretos en este entorno."
+                echo "Comando preparado para ejecutar: docker push $(imageRepository):$(tag)"
+              fi
+            displayName: 'Docker Push to DockerHub Registry'
+            env:
+              DOCKER_USERNAME: $(DOCKER_USERNAME)
+              DOCKER_PASSWORD: $(DOCKER_PASSWORD)
 
   # ============================================================================
   # STAGE 4: Validación y Despliegue en Kubernetes (Requisitos 6, 7 y 8)
   # ============================================================================
   - stage: Kubernetes_Validation
     displayName: '4. Despliegue y Validación K8s'
-    dependsOn: Build_Docker
+    dependsOn: Build_And_Push_Docker
     jobs:
       - job: ValidateAndDeployK8s
         displayName: 'Validar Manifiestos de environment/'
