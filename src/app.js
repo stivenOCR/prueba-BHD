@@ -1,6 +1,9 @@
 const express = require('express');
 
 const app = express();
+// Buena práctica de seguridad: ocultar cabecera que delata Express
+app.disable('x-powered-by');
+
 app.use(express.json());
 
 // Endpoint principal

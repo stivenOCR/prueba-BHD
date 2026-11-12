@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: devops-sample-app
-          image: devops-sample-app:v1.0.0
+          image: stivendevcr/devops-sample-app:v1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
