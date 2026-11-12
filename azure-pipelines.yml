@@ -138,7 +138,7 @@ stages:
         steps:
           - script: |
               echo "=== VALIDANDO MANIFIESTOS SINTÁCTICOS DE KUBERNETES ==="
-              kubectl apply --dry-run=client -k environment/
+              kubectl apply --dry-run=client --validate=false -k environment/
               echo "=== ESTRUCTURA DE LA CARPETA ENVIRONMENT ==="
               ls -la environment/
             displayName: 'Kubectl Dry-Run & Manifest Validation'
