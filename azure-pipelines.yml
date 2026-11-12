@@ -9,7 +9,7 @@ pool:
 
 variables:
   dockerRegistryServiceConnection: 'dockerhub-connection'
-  imageRepository: 'stivenocr/devops-sample-app'
+  imageRepository: 'stivendevcr/devops-sample-app'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
