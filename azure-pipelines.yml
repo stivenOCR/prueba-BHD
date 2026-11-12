@@ -109,10 +109,10 @@ stages:
               docker images | grep devops-sample-app
             displayName: 'Docker Build Multi-Stage'
 
-          - script: |
+          - bash: |
               echo "=== 2. AUTENTICANDO CON DOCKER HUB ==="
-              if [ -n "$(DOCKER_PASSWORD)" ]; then
-                echo "$(DOCKER_PASSWORD)" | docker login -u "$(DOCKER_USERNAME)" --password-stdin
+              if [ -n "$DOCKER_PASSWORD" ]; then
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
                 echo "=== 3. PUBLICANDO IMAGEN EN DOCKER HUB ==="
                 docker push $(imageRepository):$(tag)
                 docker push $(imageRepository):latest
